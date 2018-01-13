@@ -48,7 +48,7 @@ public class ArkivariumBackup extends Application {
 		    FileReader fileReader = null;
 		    fileReader = new FileReader(file);
 		    XMLInputFactory factory = XMLInputFactory.newInstance();
-		    XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(file.getName()));
+		    XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(file.getAbsolutePath()));
 		    while(eventReader.hasNext()) {
 			    XMLEvent event = eventReader.nextEvent();
 			    switch(event.getEventType()) {
@@ -114,7 +114,7 @@ public class ArkivariumBackup extends Application {
 	    } catch (XMLStreamException e) {
 		    e.printStackTrace();
 	    } catch (IOException ex) {
-		    System.out.println("Failed to open " + file.getName() + "\n");
+		    System.out.println("Failed to open " + file.getAbsolutePath() + "\n");
                     // Logger.getLogger(JavaFX_Text.class.getName()).log(Level.SEVERE, null, ex);
 	    }
     }
@@ -160,7 +160,7 @@ public class ArkivariumBackup extends Application {
 		    e.printStackTrace();
 	    } catch (IOException e) {
 		    e.printStackTrace();
-		    System.out.println("Failed to open " + file.getName() + "\n");
+		    System.out.println("Failed to open " + file.getAbsolutePath() + "\n");
                     // Logger.getLogger(JavaFX_Text.class.getName()).log(Level.SEVERE, null, ex);
 	    }
     }
@@ -173,11 +173,11 @@ public class ArkivariumBackup extends Application {
 	    fileChooser.setInitialFileName("arkivstruktur.xml");
 	    selectedImportFile = fileChooser.showOpenDialog(stage);
 	    if (selectedImportFile != null) {
-		    System.out.println("Importing backup from " + selectedImportFile.getName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
-		    File importFile = new File(selectedImportFile.getName());
+		    System.out.println("Importing backup from " + selectedImportFile.getAbsolutePath() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
+		    File importFile = new File(selectedImportFile.getAbsolutePath());
 		    this.parseImport(importFile);
 	    } else {
-		    System.out.println("Failed to open " + selectedImportFile.getName() + "\n");
+		    System.out.println("Failed to open " + selectedImportFile.getAbsolutePath() + "\n");
 	    }
     }
     public void exportBackup(Stage stage, String hostname, String portname, String username, String password) {
@@ -189,11 +189,11 @@ public class ArkivariumBackup extends Application {
 	    fileChooser.setInitialFileName("arkivstruktur.xml");
 	    selectedExportFile = fileChooser.showOpenDialog(stage);
 	    if (selectedExportFile != null) {
-		    System.out.println("Exporting backup to " + selectedExportFile.getName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
+		    System.out.println("Exporting backup to " + selectedExportFile.getAbsolutePath() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
 		    File exportFile = new File(selectedExportFile.getName());
 		    this.storeExport(exportFile);
 	    } else {
-		    System.out.println("Failed to save/export backup file " + selectedExportFile.getName());
+		    System.out.println("Failed to save/export backup file " + selectedExportFile.getAbsolutePath());
 	    }
     }
     private void initUI(Stage stage) {
