@@ -1,0 +1,7 @@
+Arkivarium Backup Tool
+
+Graphical UI tool for importing and exporting Noark 5 arkivstruktur.xml files
+
+Compile and run with 'make'.  Run with 'make run'.
+
+See https://github.com/arkivarium/backup for the latest update/release.
