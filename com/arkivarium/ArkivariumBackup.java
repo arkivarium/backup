@@ -56,7 +56,7 @@ public class ArkivariumBackup extends Application {
 	    fileChooser.setInitialFileName("arkivstruktur.xml");
 	    selectedImportFile = fileChooser.showOpenDialog(stage);
 	    if (fileChooser.getInitialFileName() != null) {
-		    System.out.println("Importing backup to " + fileChooser.getInitialFileName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
+		    System.out.println("Importing backup from " + fileChooser.getInitialFileName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
 		    File importFile = new File(fileChooser.getInitialFileName());
 		    this.parseImport(importFile);
 	    } else {
