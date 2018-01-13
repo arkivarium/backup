@@ -38,6 +38,7 @@ public class ArkivariumBackup extends Application {
         initUI(stage);
     }
     private void parseImport(File file) {
+	    boolean bSystemID = false;	    
 	    boolean bArkivstatus = false;
 	    boolean bDokumentmedium = false;
 	    boolean bOpprettetDato = false;
@@ -59,6 +60,8 @@ public class ArkivariumBackup extends Application {
 					    // Iterator<Attribute> attributes = startElement.getAttributes();
 					    // String rollNo = attributes.next().getValue();
 					    // System.out.println("Roll No : " + rollNo);
+				    } else if (qName.equalsIgnoreCase("systemID")) {
+					    bSystemID = true;
 				    } else if (qName.equalsIgnoreCase("arkivstatus")) {
 					    bArkivstatus = true;
 				    } else if (qName.equalsIgnoreCase("dokumentmedium")) {
@@ -72,23 +75,27 @@ public class ArkivariumBackup extends Application {
 				    break;
 			    case XMLStreamConstants.CHARACTERS:
 				    Characters characters = event.asCharacters();
-				    if(bArkivstatus) {
+				    if (bSystemID) {
+					    System.out.println("systemID: " + characters.getData());
+					    bSystemID = false;
+				    }
+				    if (bArkivstatus) {
 					    System.out.println("arkivstatus: " + characters.getData());
 					    bArkivstatus = false;
 				    }
-				    if(bDokumentmedium) {
+				    if (bDokumentmedium) {
 					    System.out.println("dokumentmedium: " + characters.getData());
 					    bDokumentmedium = false;
 				    }
-				    if(bOpprettetDato) {
+				    if (bOpprettetDato) {
 					    System.out.println("opprettetdato: " + characters.getData());
 					    bOpprettetDato = false;
 				    }
-				    if(bAvsluttetDato) {
+				    if (bAvsluttetDato) {
 					    System.out.println("avsluttetdato: " + characters.getData());
 					    bAvsluttetDato = false;
 				    }
-				    if(bAvsluttetAv) {
+				    if (bAvsluttetAv) {
 					    System.out.println("avsluttetav: " + characters.getData());
 					    bAvsluttetAv = false;
 				    }
