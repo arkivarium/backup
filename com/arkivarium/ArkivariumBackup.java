@@ -55,12 +55,12 @@ public class ArkivariumBackup extends Application {
 	    fileChooser.setTitle("Open Noark5 Import File...");
 	    fileChooser.setInitialFileName("arkivstruktur.xml");
 	    selectedImportFile = fileChooser.showOpenDialog(stage);
-	    if (fileChooser.getInitialFileName() != null) {
-		    System.out.println("Importing backup from " + fileChooser.getInitialFileName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
-		    File importFile = new File(fileChooser.getInitialFileName());
+	    if (selectedImportFile != null) {
+		    System.out.println("Importing backup from " + selectedImportFile.getName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
+		    File importFile = new File(selectedImportFile.getName());
 		    this.parseImport(importFile);
 	    } else {
-		    System.out.println("Failed to open " + fileChooser.getInitialFileName() + "\n");
+		    System.out.println("Failed to open " + selectedImportFile.getName() + "\n");
 	    }
     }
     public void exportBackup(Stage stage, String hostname, String portname, String username, String password) {
@@ -71,12 +71,12 @@ public class ArkivariumBackup extends Application {
 	    fileChooser.setTitle("Save Noark5 Export File As...");
 	    fileChooser.setInitialFileName("arkivstruktur.xml");
 	    selectedExportFile = fileChooser.showOpenDialog(stage);
-	    if (fileChooser.getInitialFileName() != null) {
-		    System.out.println("Exporting backup to " + fileChooser.getInitialFileName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
-		    File exportFile = new File(fileChooser.getInitialFileName());
+	    if (selectedExportFile != null) {
+		    System.out.println("Exporting backup to " + selectedExportFile.getName() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
+		    File exportFile = new File(selectedExportFile.getName());
 		    this.storeExport(exportFile);
 	    } else {
-		    System.out.println("Failed to save/export backup file " + fileChooser.getInitialFileName());
+		    System.out.println("Failed to save/export backup file " + selectedExportFile.getName());
 	    }
     }
     private void initUI(Stage stage) {
