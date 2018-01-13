@@ -1,2 +1,2 @@
 all:	ArkivariumBackup.java
-	javac ArkivariumBackup.java
+	javac -Xlint:unchecked ArkivariumBackup.java
