@@ -27,6 +27,7 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import com.arkivarium.Noark5Parser;
 
 /**
  * Arkivarium Backup
@@ -36,133 +37,6 @@ public class ArkivariumBackup extends Application {
     @Override
     public void start(Stage stage) {
         initUI(stage);
-    }
-    private void parseImport(File file) {
-	    boolean bSystemID = false;	    
-	    boolean bArkivstatus = false;
-	    boolean bDokumentmedium = false;
-	    boolean bOpprettetDato = false;
-	    boolean bAvsluttetDato = false;
-	    boolean bAvsluttetAv = false;
-	    try {
-		    FileReader fileReader = null;
-		    fileReader = new FileReader(file);
-		    XMLInputFactory factory = XMLInputFactory.newInstance();
-		    XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(file.getAbsolutePath()));
-		    while(eventReader.hasNext()) {
-			    XMLEvent event = eventReader.nextEvent();
-			    switch(event.getEventType()) {
-			    case XMLStreamConstants.START_ELEMENT:
-				    StartElement startElement = event.asStartElement();
-				    String qName = startElement.getName().getLocalPart();
-				    if (qName.equalsIgnoreCase("arkiv")) {
-					    System.out.println("Start Element : arkiv");
-					    // Iterator<Attribute> attributes = startElement.getAttributes();
-					    // String rollNo = attributes.next().getValue();
-					    // System.out.println("Roll No : " + rollNo);
-				    } else if (qName.equalsIgnoreCase("systemID")) {
-					    bSystemID = true;
-				    } else if (qName.equalsIgnoreCase("arkivstatus")) {
-					    bArkivstatus = true;
-				    } else if (qName.equalsIgnoreCase("dokumentmedium")) {
-					    bDokumentmedium = true;
-				    } else if (qName.equalsIgnoreCase("opprettetDato")) {
-					    bOpprettetDato = true;
-				    }
-				    else if (qName.equalsIgnoreCase("avsluttetDato")) {
-					    bAvsluttetDato = true;
-				    }
-				    break;
-			    case XMLStreamConstants.CHARACTERS:
-				    Characters characters = event.asCharacters();
-				    if (bSystemID) {
-					    System.out.println("systemID: " + characters.getData());
-					    bSystemID = false;
-				    }
-				    if (bArkivstatus) {
-					    System.out.println("arkivstatus: " + characters.getData());
-					    bArkivstatus = false;
-				    }
-				    if (bDokumentmedium) {
-					    System.out.println("dokumentmedium: " + characters.getData());
-					    bDokumentmedium = false;
-				    }
-				    if (bOpprettetDato) {
-					    System.out.println("opprettetdato: " + characters.getData());
-					    bOpprettetDato = false;
-				    }
-				    if (bAvsluttetDato) {
-					    System.out.println("avsluttetdato: " + characters.getData());
-					    bAvsluttetDato = false;
-				    }
-				    if (bAvsluttetAv) {
-					    System.out.println("avsluttetav: " + characters.getData());
-					    bAvsluttetAv = false;
-				    }
-				    break;
-			    case XMLStreamConstants.END_ELEMENT:
-				    EndElement endElement = event.asEndElement();
-				    if(endElement.getName().getLocalPart().equalsIgnoreCase("arkiv")) {
-					    System.out.println("End Element : arkiv");
-				    }
-				    break;
-			    }
-		    }
-		    fileReader.close();
-	    } catch (FileNotFoundException e) {
-		    e.printStackTrace();
-	    } catch (XMLStreamException e) {
-		    e.printStackTrace();
-	    } catch (IOException ex) {
-		    System.out.println("Failed to open " + file.getAbsolutePath() + "\n");
-                    // Logger.getLogger(JavaFX_Text.class.getName()).log(Level.SEVERE, null, ex);
-	    }
-    }
-    private void storeExport(File file) {
-	    XMLOutputFactory factory = XMLOutputFactory.newInstance();
-	    try {
-		    XMLStreamWriter writer = factory.createXMLStreamWriter(new FileWriter(file.getName()));
-		    writer.writeStartDocument("utf-8","1.0");
-		    writer.setPrefix("arkiv", "http://www.arkivverket.no/standarder/noark5/arkivstruktur");
-		    writer.setDefaultNamespace("http://www.arkivverket.no/standarder/noark5/arkivstruktur");
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur","arkiv");
-		    writer.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		    writer.writeNamespace("xmlns","http://www.arkivverket.no/standarder/noark5/arkivstruktur");
-		    writer.writeNamespace("n5mdk", "http://www.arkivverket.no/standarder/noark5/metadatakatalog");
-		    writer.writeAttribute("xsi:schemaLocation","http://www.arkivverket.no/standarder/noark5/arkivstruktur arkivstruktur.xsd");
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "systemID");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "tittel");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "arkivstatus");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "dokumentmedium");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "opprettetDato");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "opprettetAv");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "avsluttetDato");
-		    writer.writeEndElement();
-		    writer.writeStartElement("http://www.arkivverket.no/standarder/noark5/arkivstruktur", "avsluttetAv");
-		    writer.writeEndElement();
-		    writer.writeEndElement();
-		    writer.writeEndDocument();
-		    writer.flush();
-		    writer.close();
-		    // FileWriter fileWriter = null;
-		    // fileWriter = new FileWriter(file);
-		    // fileWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		    // fileWriter.write("<arkiv xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.arkivverket.no/standarder/noark5/arkivstruktur\" xmlns:n5mdk=\"http://www.arkivverket.no/standarder/noark5/metadatakatalog\" xsi:schemaLocation=\"http://www.arkivverket.no/standarder/noark5/arkivstruktur arkivstruktur.xsd\">\n");
-		    // fileWriter.write("</arkiv>\n");
-		    // fileWriter.close();
-	    } catch (XMLStreamException e) {
-		    e.printStackTrace();
-	    } catch (IOException e) {
-		    e.printStackTrace();
-		    System.out.println("Failed to open " + file.getAbsolutePath() + "\n");
-                    // Logger.getLogger(JavaFX_Text.class.getName()).log(Level.SEVERE, null, ex);
-	    }
     }
     public void importBackup(Stage stage, String hostname, String portname, String username, String password) {
 	    FileChooser fileChooser = new FileChooser();
@@ -175,7 +49,8 @@ public class ArkivariumBackup extends Application {
 	    if (selectedImportFile != null) {
 		    System.out.println("Importing backup from " + selectedImportFile.getAbsolutePath() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
 		    File importFile = new File(selectedImportFile.getAbsolutePath());
-		    this.parseImport(importFile);
+		    Noark5Parser parser = new Noark5Parser();
+		    parser.parseImport(importFile);
 	    } else {
 		    System.out.println("Failed to open " + selectedImportFile.getAbsolutePath() + "\n");
 	    }
@@ -191,7 +66,8 @@ public class ArkivariumBackup extends Application {
 	    if (selectedExportFile != null) {
 		    System.out.println("Exporting backup to " + selectedExportFile.getAbsolutePath() + "...\n" + hostname + ":" + portname + "/" + username + "/" + password);
 		    File exportFile = new File(selectedExportFile.getName());
-		    this.storeExport(exportFile);
+		    Noark5Parser parser = new Noark5Parser();
+		    parser.storeExport(exportFile);
 	    } else {
 		    System.out.println("Failed to save/export backup file " + selectedExportFile.getAbsolutePath());
 	    }
